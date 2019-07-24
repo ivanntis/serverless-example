@@ -1,35 +1,27 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: pulse-service
-#app: your-app-name
-#tenant: your-tenant-name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
   runtime: python3.7
   memorySize: 512 # optional, in MB, default is 1024
-  timeout: 10 # optional, in seconds, default is 6
+  timeout: 30 # optional, in seconds, default is 6
   versionFunctions: false # optional, default is true
   tracing:
     lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
 
   stage: ${opt:stage, self:custom.defaultStage}
   profile: ${self:custom.profiles.${self:provider.stage}}
+
+  vpc:
+    securityGroupIds:
+      - sg-0b2ca7e77be6f6241
+    subnetIds:
+      - subnet-0c3c4355c09d027f6
+      - subnet-01db199462b2f1b2c
+      - subnet-0d3c311f51d0519c3
+      - subnet-0ba43ef46cc579f04
+      - subnet-0c34f29aae1f7dac1
+      - subnet-05bffd55dc53b521f
 
   apiKeys:
   - free:
@@ -51,12 +43,27 @@ provider:
         limit: 100000
         period: DAY
 
+  environment:
+    DATABASE_USER: ${env:DATABASE_USER}
+    DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
+    DATABASE_HOST: ${env:DATABASE_HOST}
+    DATABASE_NAME: ${env:DATABASE_NAME}
+    # GOOGLE_API_KEY: ${env:GOOGLE_API_KEY}
+
 custom:
   defaultStage: dev
   profiles:
     dev: dev_pulse_api
     prod: prod_pulse_api
-
+  pythonRequirements:
+    layer:
+      name: ${self:provider.stage}-layerName
+      description: Python requirements lamba layer
+      compatibleRuntimes:
+        - python3.7
+      licenseInfo: GPLv3
+      allowedAccounts:
+        - '*'
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -90,6 +97,8 @@ custom:
 functions:
   hello:
     handler: handler.hello
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -144,3 +153,6 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+- serverless-python-requirements
