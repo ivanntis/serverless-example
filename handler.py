@@ -6,6 +6,10 @@ import random
 import mysql.connector as sql
 import requests
 import numpy as np
+import hashlib
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from sqlalchemy import create_engine 
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
