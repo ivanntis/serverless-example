@@ -5,6 +5,7 @@ import copy
 import random
 import mysql.connector as sql
 import requests
+import numpy as np
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -16,7 +17,7 @@ name = os.environ['DATABASE_NAME']
 # google_api_key = os.environ['GOOGLE_API_KEY']
 
 def hello(event, context):
-    print("ingreso")
+    print("ingreso final")
     #logger.info(user+" "+password+" "+host+" "+database_name)
     try:
         #conn = sql.connect(user="pulsedb", password="asdf1234", host="pulsedbid.cquegzdtu9b8.us-east-1.rds.amazonaws.com", database="pulsedbinst")
