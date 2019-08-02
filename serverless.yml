@@ -70,9 +70,7 @@ functions:
     handler: handler.hello
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
-      - arn:aws:lambda:us-east-1:668099181075:layer:AWSLambda-Python37-SciPy1x:2
-     # - arn:aws:lambda:us-east-1:635472762977:layer:numpy:1
-     # - arn:aws:lambda:us-east-1:635472762977:layer:libsutils:1
+      - arn:aws:lambda:us-east-1:635472762977:layer:pandas-numpy-pytz-37-s3:1
     events:
       - http:
           path: pulse_test

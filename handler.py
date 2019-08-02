@@ -4,6 +4,7 @@ import logging
 import copy
 import random
 import mysql.connector as sql
+import pandas as pd
 import requests
 import numpy as np
 import hashlib
